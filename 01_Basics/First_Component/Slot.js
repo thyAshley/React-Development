@@ -1,11 +1,12 @@
-class Machine extends React.Component {
+class Friend extends React.Component {
     render() {
-        const {s1, s2, s3} = this.props;
-        const msg = (s1 === s2) && (s2 === s3) ? 'You Win' : 'You Lose'
+        const {name, hobbies} = this.props
         return (
             <div>
-                <span>{ s1 }{ s2 }{ s3 }</span>
-                <p>{ msg }</p>  
+                <p>{name}</p>
+                <ul>
+                    { hobbies.map(el => <li>{ el }</li>) }
+                </ul>
             </div>
         )
     }
