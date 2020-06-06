@@ -1,2 +1,2 @@
 # React-Development
-Folder for React Learning
+This is my repository for learning about react development from scratch.
