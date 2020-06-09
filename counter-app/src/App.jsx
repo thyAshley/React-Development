@@ -4,6 +4,15 @@ import CounterList from "./components/CounterList";
 import NavBar from "./components/NavBar";
 
 class App extends Component {
+  constructor() {
+    super();
+    console.log("App - Constructor");
+  }
+
+  componentDidMount() {
+    console.log("App - Mounted");
+  }
+
   state = {
     counters: [
       { id: 1, value: 0 },
@@ -27,6 +36,14 @@ class App extends Component {
     this.setState({ counters });
   };
 
+  handleDecrement = (counter) => {
+    const counters = [...this.state.counters];
+    const index = counters.indexOf(counter);
+    counters[index] = { ...counter };
+    counters[index].value--;
+    this.setState({ counters });
+  };
+
   handleReset = () => {
     const counters = this.state.counters.map((counter) => {
       counter.value = 0;
@@ -36,6 +53,7 @@ class App extends Component {
   };
 
   render() {
+    console.log("App - Rendered");
     return (
       <React.Fragment>
         <NavBar
@@ -44,6 +62,7 @@ class App extends Component {
         <CounterList
           onDelete={this.handleDelete}
           onIncrement={this.handleIncrement}
+          onDecrement={this.handleDecrement}
           onReset={this.handleReset}
           counters={this.state.counters}
         />
