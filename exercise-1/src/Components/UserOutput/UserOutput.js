@@ -1,8 +1,8 @@
 import React from "react";
-
+import "./UserOutput.css";
 function UserOutput(props) {
   return (
-    <div>
+    <div className="UserOutput">
       <p>Username: {props.name}</p>
       <p>{props.children}</p>
     </div>
