@@ -10,17 +10,7 @@ class App extends Component {
       { name: "Steph", age: 26 },
     ],
     otherState: "other value",
-  };
-
-  switchNameHandler = (newName) => {
-    console.log(this);
-    this.setState({
-      persons: [
-        { name: newName, age: 28 },
-        { name: "Manu", age: 20 },
-        { name: "Steph", age: 24 },
-      ],
-    });
+    showPersons: false,
   };
 
   nameChangeHandler = (event) => {
@@ -31,6 +21,10 @@ class App extends Component {
         { name: "Steph", age: 24 },
       ],
     });
+  };
+  togglePersonsHandler = () => {
+    const showPersons = !this.state.showPersons;
+    this.setState({ showPersons });
   };
 
   render() {
@@ -47,21 +41,25 @@ class App extends Component {
         <button
           style={style}
           onClick={() => {
-            return this.switchNameHandler("Maxiimus");
+            this.togglePersonsHandler();
           }}
         >
           Switch Name
         </button>
-        <Person name={persons[0].name} age={persons[0].age} />
-        <Person
-          name={persons[1].name}
-          age={persons[1].age}
-          onClick={this.switchNameHandler.bind(this, "Max!")}
-          onChange={this.nameChangeHandler}
-        >
-          Hobbies: Riding
-        </Person>
-        <Person name={persons[2].name} age={persons[2].age} />
+        {this.state.showPersons && (
+          <div>
+            <Person name={persons[0].name} age={persons[0].age} />
+            <Person
+              name={persons[1].name}
+              age={persons[1].age}
+              onClick={this.switchNameHandler.bind(this, "Max!")}
+              onChange={this.nameChangeHandler}
+            >
+              Hobbies: Riding
+            </Person>
+            <Person name={persons[2].name} age={persons[2].age} />
+          </div>
+        )}
       </div>
     );
   }
