@@ -1,47 +1,6 @@
 import React, { Component, useState } from "react";
 import Person from "./Person/Person";
-
-// const App = (props) => {
-//   const [personState, setPersonsState] = useState({
-//     persons: [
-//       { name: "Max", age: 28 },
-//       { name: "Manu", age: 20 },
-//       { name: "Steph", age: 26 },
-//     ],
-//   });
-
-//   const switchNameHandler = () => {
-//     setPersonsState({
-//       persons: [
-//         { name: "Maximlian", age: 28 },
-//         { name: "Manu", age: 20 },
-//         { name: "Steph", age: 24 },
-//       ],
-//     });
-//   };
-
-//   return (
-//     <div className="App">
-//       <h1>Hi, From React</h1>
-//       <button onClick={switchNameHandler}>Switch Name</button>
-//       <Person
-//         name={personState.persons[0].name}
-//         age={personState.persons[0].age}
-//       />
-//       <Person
-//         name={personState.persons[1].name}
-//         age={personState.persons[1].age}
-//         onClick={switchNameHandler}
-//       >
-//         Hobbies: Riding
-//       </Person>
-//       <Person
-//         name={personState.persons[2].name}
-//         age={personState.persons[2].age}
-//       />
-//     </div>
-//   );
-// };
+import "./App.css";
 
 class App extends Component {
   state = {
@@ -76,10 +35,17 @@ class App extends Component {
 
   render() {
     const { persons } = this.state;
+    const style = {
+      backgroundColor: "white",
+      border: "1px solid blue",
+      cursor: "pointer",
+      font: "inherit",
+    };
     return (
       <div className="App">
         <h1>Hi, From React</h1>
         <button
+          style={style}
           onClick={() => {
             return this.switchNameHandler("Maxiimus");
           }}
