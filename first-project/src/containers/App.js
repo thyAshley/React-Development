@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import Person from "./Person/Person";
+import Persons from "../components/Persons/Persons";
 import classes from "./App.module.css";
-
+import Cockpit from "../components/Cockpit/Cockpit";
 class App extends Component {
   state = {
     persons: [
@@ -34,40 +34,28 @@ class App extends Component {
   };
 
   render() {
-    let person = null;
-    let btnClass = [classes.Button];
+    let persons = null;
     if (this.state.showPersons) {
-      person = this.state.persons.map((person, index) => {
-        return (
-          <Person
-            key={person.id}
-            name={person.name}
-            age={person.age}
-            onChange={(event) => {
-              this.nameChangeHandler(event, person.id);
-            }}
-            onDelete={() => {
-              this.deletePersonHandler(index);
-            }}
+      persons = (
+        <div>
+          <Persons
+            persons={this.state.persons}
+            showPersons={this.state.showPersons}
+            onChange={this.nameChangeHandler}
+            delete={this.deletePersonHandler}
           />
-        );
-      });
-      btnClass.push(classes.Red);
+        </div>
+      );
     }
 
     return (
       <div className={classes.App}>
-        <h1>Hi, From React</h1>
-        <p>It is working</p>
-        <button
-          className={btnClass.join(" ")}
-          onClick={() => {
-            this.togglePersonsHandler();
-          }}
-        >
-          Toggle Person
-        </button>
-        {person}
+        <Cockpit
+          length={this.state.persons.length}
+          togglePerson={this.togglePersonsHandler}
+          showPersons={this.state.showPersons}
+        />
+        {persons}
       </div>
     );
   }
