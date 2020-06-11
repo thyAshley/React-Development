@@ -7,7 +7,7 @@
   width: 60%;
 }
 
-@media (min-width: 500px) {
+@media (min-width: 550px) {
   .Person {
     width: 450px;
   }
