@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classes from "./Cockpit.module.css";
+
 const Cockpit = (props) => {
+  useEffect(() => {
+    console.log("[Cockpit.js] use effects");
+    setTimeout(() => {
+      console.log("finish");
+    }, 1000);
+  }, [props.showPersons]);
+
   const assignedClasses = [];
   if (props.length <= 2) {
     assignedClasses.push(classes.red);
