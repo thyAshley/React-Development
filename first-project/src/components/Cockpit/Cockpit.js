@@ -4,9 +4,13 @@ import classes from "./Cockpit.module.css";
 const Cockpit = (props) => {
   useEffect(() => {
     console.log("[Cockpit.js] use effects");
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       console.log("finish");
     }, 1000);
+    return () => {
+      clearTimeout(timer);
+      console.log("[Cockpit.js] cleanup in useEffect");
+    };
   }, [props.showPersons]);
 
   const assignedClasses = [];
@@ -33,4 +37,4 @@ const Cockpit = (props) => {
   );
 };
 
-export default Cockpit;
+export default React.memo(Cockpit);

@@ -15,6 +15,7 @@ class App extends Component {
       ],
       otherState: "other value",
       showPersons: false,
+      showCockpit: true,
     };
   }
 
@@ -46,9 +47,15 @@ class App extends Component {
     this.setState({ persons });
   };
 
+  toggleCockpit = () => {
+    const showCockpit = !this.state.showCockpit;
+    this.setState({ showCockpit });
+  };
   render() {
     console.log("[App.js] Render");
     let persons = null;
+    let cockpit = null;
+
     if (this.state.showPersons) {
       persons = (
         <div>
@@ -61,14 +68,19 @@ class App extends Component {
         </div>
       );
     }
-
-    return (
-      <div className={classes.App}>
+    if (this.state.showCockpit) {
+      cockpit = (
         <Cockpit
           length={this.state.persons.length}
           togglePerson={this.togglePersonsHandler}
           showPersons={this.state.showPersons}
         />
+      );
+    }
+    return (
+      <div className={classes.App}>
+        <button onClick={this.toggleCockpit}>Remove Cockpit</button>
+        {cockpit}
         {persons}
       </div>
     );
