@@ -8,7 +8,13 @@ const Burger = (props) => {
       return <BurgerIngredient key={igKey + idx} type={igKey} />;
     });
   });
-  return <div className={classes.Burger}>{transformedIngredients}</div>;
+  return (
+    <div className={classes.Burger}>
+      <BurgerIngredient type="bread-top" />
+      {transformedIngredients}
+      <BurgerIngredient type="bread-bottom" />
+    </div>
+  );
 };
 
 export default Burger;
