@@ -2,16 +2,6 @@ import React, { PureComponent } from "react";
 import Person from "./Person/Person";
 
 class Persons extends PureComponent {
-  // static getDerivedStateFromProps(props, state) {
-  //   console.log("[Persons.js] getDerivedStateFromProps");
-  //   return state;
-  // }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   console.log("[Person.js] ShouldComponentUpdate");
-  //   return nextProps.persons !== this.props.persons;
-  // }
-
   getSnapshotBeforeUpdate(prevProps, prevState) {
     console.log("[Persons.js] getSnapshotBeforeUpdate");
     return null;
@@ -28,7 +18,7 @@ class Persons extends PureComponent {
   render() {
     const props = this.props;
     console.log("[Person.js] Rendering...");
-    const persons = props.persons.map((person, index) => {
+    return props.persons.map((person, index) => {
       return (
         <Person
           name={person.name}
@@ -43,7 +33,6 @@ class Persons extends PureComponent {
         />
       );
     });
-    return persons;
   }
 }
 export default Persons;

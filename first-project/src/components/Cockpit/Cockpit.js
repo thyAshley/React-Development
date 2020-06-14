@@ -1,17 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import classes from "./Cockpit.module.css";
+import AuthContext from "../../context/auth-context";
 
 const Cockpit = (props) => {
+  const toggleBtnRef = useRef(null);
+
+  const authContext = useContext(AuthContext);
   useEffect(() => {
     console.log("[Cockpit.js] use effects");
-    const timer = setTimeout(() => {
-      console.log("finish");
-    }, 1000);
+    toggleBtnRef.current.click();
     return () => {
-      clearTimeout(timer);
       console.log("[Cockpit.js] cleanup in useEffect");
     };
-  }, [props.showPersons]);
+  }, []);
 
   const assignedClasses = [];
   if (props.length <= 2) {
@@ -30,8 +31,15 @@ const Cockpit = (props) => {
     <React.Fragment>
       <h1>Hi, From React</h1>
       <p className={assignedClasses.join(" ")}>It is working</p>
-      <button className={btnClass.join(" ")} onClick={props.togglePerson}>
+      <button
+        ref={toggleBtnRef}
+        className={btnClass.join(" ")}
+        onClick={props.togglePerson}
+      >
         Toggle Me
+      </button>
+      <button className={classes.Button} onClick={authContext.login}>
+        Log in
       </button>
     </React.Fragment>
   );

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Persons from "../components/Persons/Persons";
 import classes from "./App.module.css";
 import Cockpit from "../components/Cockpit/Cockpit";
 import WithClass from "../hoc/WithClass";
+import AuthContext from "../context/auth-context";
 
 class App extends Component {
   constructor(props) {
@@ -19,6 +19,7 @@ class App extends Component {
       showPersons: false,
       showCockpit: true,
       changeCounter: 0,
+      authenticated: false,
     };
   }
 
@@ -59,6 +60,14 @@ class App extends Component {
     const showCockpit = !this.state.showCockpit;
     this.setState({ showCockpit });
   };
+
+  loginHandler = () => {
+    this.setState((prevState) => {
+      return {
+        authenticated: !prevState.authenticated,
+      };
+    });
+  };
   render() {
     console.log("[App.js] Render");
     let persons = null;
@@ -72,6 +81,7 @@ class App extends Component {
             showPersons={this.state.showPersons}
             onChange={this.nameChangeHandler}
             delete={this.deletePersonHandler}
+            isAuthenticated={this.state.authenticated}
           />
         </div>
       );
@@ -82,15 +92,23 @@ class App extends Component {
           length={this.state.persons.length}
           togglePerson={this.togglePersonsHandler}
           showPersons={this.state.showPersons}
+          login={this.loginHandler}
         />
       );
     }
     return (
-      <WithClass classes={classes.App}>
+      <div className={classes.App}>
         <button onClick={this.toggleCockpit}>Remove Cockpit</button>
-        {cockpit}
-        {persons}
-      </WithClass>
+        <AuthContext.Provider
+          value={{
+            authenticated: this.state.authenticated,
+            login: this.loginHandler,
+          }}
+        >
+          {cockpit}
+          {persons}
+        </AuthContext.Provider>
+      </div>
     );
   }
 }
