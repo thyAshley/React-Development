@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import classes from "./Person.module.css";
+
 class Person extends Component {
   render() {
     console.log("[Person.js] rendering");
     return (
-      <div className={classes.Person}>
+      <React.Fragment>
         <p onClick={this.props.onDelete}>
           I'm {this.props.name} and i am {this.props.age} years old
         </p>
@@ -14,7 +14,7 @@ class Person extends Component {
           value={this.props.name}
           onChange={this.props.onChange}
         />
-      </div>
+      </React.Fragment>
     );
   }
 }

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-
+import PropTypes from "prop-types";
 import Persons from "../components/Persons/Persons";
 import classes from "./App.module.css";
 import Cockpit from "../components/Cockpit/Cockpit";
+import WithClass from "../hoc/WithClass";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +18,7 @@ class App extends Component {
       otherState: "other value",
       showPersons: false,
       showCockpit: true,
+      changeCounter: 0,
     };
   }
 
@@ -33,7 +36,12 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[index] = { ...this.state.persons[index] };
     persons[index].name = event.target.value;
-    this.setState({ persons });
+    this.setState((prevState) => {
+      return {
+        persons,
+        changeCounter: prevState.changeCounter + 1,
+      };
+    });
   };
 
   togglePersonsHandler = () => {
@@ -78,11 +86,11 @@ class App extends Component {
       );
     }
     return (
-      <div className={classes.App}>
+      <WithClass classes={classes.App}>
         <button onClick={this.toggleCockpit}>Remove Cockpit</button>
         {cockpit}
         {persons}
-      </div>
+      </WithClass>
     );
   }
 }
