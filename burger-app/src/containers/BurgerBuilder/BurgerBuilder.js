@@ -4,7 +4,7 @@ import Aux from "../../hoc/Auxiliary";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
-import OrderSummary from "../../components/OrderSummary/OrderSummary";
+import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 
 const INGREDIENT_PRICE = {
   salad: 0.5,
@@ -87,6 +87,7 @@ class BurgerBuilder extends Component {
             purchaseCancel={this.purchaseCancelHandler}
             purchaseContinue={this.purchaseContinueHandler}
             ingredients={this.state.ingredient}
+            price={this.state.totalPrice.toFixed(2)}
           />
         </Modal>
         <Burger ingredients={this.state.ingredient} />
