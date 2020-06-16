@@ -19,11 +19,9 @@ class FullPost extends Component {
   }
   onDeleteHandler = (id) => {
     console.log(id);
-    axios
-      .delete("https://my-json-server.typicode.com/typicode/demo/posts/" + id)
-      .then((response) => {
-        console.log(response);
-      });
+    axios.delete("/posts/" + id).then((response) => {
+      console.log(response);
+    });
   };
   render() {
     let post = <p style={{ textAlign: "center" }}>Please select a Post!</p>;
