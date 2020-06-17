@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 // import axios from 'axios';
-import axios from "../../axios";
-import { Route, Link } from "react-router-dom";
+import { Route, NavLink, Switch } from "react-router-dom";
 import Posts from "./Posts/Posts";
 import NewPost from "./NewPost/NewPost";
+import FullPost from "./FullPost/FullPost";
 import "./Blog.css";
 
 class Blog extends Component {
@@ -14,23 +14,36 @@ class Blog extends Component {
           <nav>
             <ul>
               <li>
-                <Link to="/">Home</Link>
+                <NavLink
+                  to="/"
+                  exact
+                  activeClassName="active"
+                  activeStyle={{
+                    color: "#fa923f",
+                    textDecoration: "underLine",
+                  }}
+                >
+                  Posts
+                </NavLink>
               </li>
               <li>
-                <Link
+                <NavLink
                   to={{
                     pathname: "/new-post",
                     search: "?quick-submit=true",
                   }}
                 >
                   New Post
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </nav>
         </header>
         <Route path="/" exact component={Posts} />
-        <Route path="/new-post" component={NewPost} />
+        <Switch>
+          <Route path="/new-post" component={NewPost} />
+          <Route path="/:id" exact component={FullPost} />
+        </Switch>
       </div>
     );
   }

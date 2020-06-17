@@ -6,15 +6,15 @@ class FullPost extends Component {
   state = {
     post: null,
   };
-  componentDidUpdate() {
-    if (this.props.id) {
-      if (!this.state.post || this.state.post.id !== this.props.id) {
-        axios
-          .get("https://jsonplaceholder.typicode.com/posts/" + this.props.id)
-          .then((response) => {
-            this.setState({ post: response.data });
-          });
-      }
+  componentDidMount() {
+    const id = this.props.match.params.id;
+    console.log(id);
+    if (id) {
+      axios
+        .get("https://jsonplaceholder.typicode.com/posts/" + id)
+        .then((response) => {
+          this.setState({ post: response.data });
+        });
     }
   }
   onDeleteHandler = (id) => {
@@ -25,7 +25,7 @@ class FullPost extends Component {
   };
   render() {
     let post = <p style={{ textAlign: "center" }}>Please select a Post!</p>;
-    if (this.props.id) {
+    if (this.props.match.params.id) {
       post = <p style={{ textAlign: "center" }}>Loading...</p>;
     }
     if (this.state.post) {
@@ -36,7 +36,7 @@ class FullPost extends Component {
           <div className="Edit">
             <button
               onClick={() => {
-                this.onDeleteHandler(this.props.id);
+                this.onDeleteHandler(this.props.match.params.id);
               }}
               className="Delete"
             >
