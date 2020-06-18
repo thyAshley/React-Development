@@ -1,11 +1,10 @@
-import React, { Component } from "react";
-import { BrowserRouter } from "react-router-dom";
-import axios from "axios";
+import React, { Component } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-import Blog from "./containers/Blog/Blog";
-axios.defaults.baseURL = "https://my-json-server.typicode.com/typicode/demo";
+import Blog from './containers/Blog/Blog';
+
 class App extends Component {
-  render() {
+  render () {
     return (
       <BrowserRouter>
         <div className="App">
