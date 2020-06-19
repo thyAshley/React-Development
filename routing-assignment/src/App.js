@@ -1,9 +1,17 @@
 import React, { Component } from "react";
-import { BrowserRouter, Link, Switch, Route, NavLink } from "react-router-dom";
+import {
+  BrowserRouter,
+  Link,
+  Switch,
+  Route,
+  NavLink,
+  Redirect,
+} from "react-router-dom";
 import Courses from "./containers/Courses/Courses";
 import Course from "./containers/Course/Course";
 import Users from "./containers/Users/Users";
-
+import NoMatch from "./component/NoMatch/NoMatch";
+import noMatch from "./component/NoMatch/NoMatch";
 class App extends Component {
   render() {
     return (
@@ -48,10 +56,12 @@ class App extends Component {
               </li>
             </ul>
           </nav>
-          <Route path="/users" component={Users} />
           <Switch>
+            <Route path="/users" component={Users} />
             {/* <Route path="/Courses/:id/" component={Course} /> */}
             <Route path="/Courses" component={Courses} />
+            <Redirect from="/all-courses" to="/courses" />
+            <Route component={noMatch} />
           </Switch>
         </div>
       </BrowserRouter>
