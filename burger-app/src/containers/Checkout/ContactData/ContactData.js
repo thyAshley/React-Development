@@ -20,6 +20,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       street: {
         elementType: "input",
@@ -46,6 +47,7 @@ class ContactData extends Component {
           maxLength: 5,
         },
         valid: false,
+        touched: false,
       },
       country: {
         elementType: "input",
@@ -58,6 +60,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       email: {
         elementType: "input",
@@ -70,6 +73,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       deliveryMethod: {
         elementType: "select",
@@ -124,17 +128,20 @@ class ContactData extends Component {
         this.setState({ loading: false });
       });
   };
+
   inputChangedHandler = (event, inputId) => {
     const orderForm = { ...this.state.orderForm };
     const formElement = { ...orderForm[inputId] };
     formElement.value = event.target.value;
-    formElement.valid = this.checkValidity(
-      formElement.value,
-      formElement.validation
-    );
+    if (formElement.validation) {
+      formElement.valid = this.checkValidity(
+        formElement.value,
+        formElement.validation
+      );
+      formElement.touched = true;
+    }
     orderForm[inputId] = formElement;
     this.setState({ orderForm });
-    console.log(orderForm);
   };
 
   render() {
@@ -154,6 +161,9 @@ class ContactData extends Component {
               elementtype={el.config.elementType}
               elementconfig={el.config.elementConfig}
               value={el.config.value}
+              invalid={!el.config.valid}
+              shouldValidate={el.config.validation}
+              touched={el.config.touched}
               changed={(e) => {
                 this.inputChangedHandler(e, el.id);
               }}
