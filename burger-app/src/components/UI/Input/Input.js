@@ -4,7 +4,6 @@ import classes from "./Input.module.css";
 
 const Input = (props) => {
   let inputElement = null;
-  console.log(props);
   switch (props.elementtype) {
     case "input":
       inputElement = (
@@ -12,6 +11,7 @@ const Input = (props) => {
           className={classes.InputElement}
           {...props.elementconfig}
           value={props.value}
+          onChange={props.changed}
         />
       );
       break;
@@ -21,14 +21,23 @@ const Input = (props) => {
           className={classes.InputElement}
           {...props.elementconfig}
           value={props.value}
+          onChange={props.changed}
         />
       );
       break;
     case "select":
       inputElement = (
-        <select className={classes.InputElement} value={props.value}>
+        <select
+          className={classes.InputElement}
+          value={props.value}
+          onChange={props.changed}
+        >
           {props.elementconfig.options.map((el) => {
-            return <option value={el.value}>{el.displayValue}</option>;
+            return (
+              <option key={el.value} value={el.value}>
+                {el.displayValue}
+              </option>
+            );
           })}
         </select>
       );
@@ -39,6 +48,7 @@ const Input = (props) => {
         <input
           className={classes.InputElement}
           {...props.elementconfig}
+          onChange={props.changed}
           value={props.value}
         />
       );
