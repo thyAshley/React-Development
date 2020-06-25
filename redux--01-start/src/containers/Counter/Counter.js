@@ -3,9 +3,11 @@ import { connect } from "react-redux";
 
 import CounterControl from "../../components/CounterControl/CounterControl";
 import CounterOutput from "../../components/CounterOutput/CounterOutput";
+import * as actionTypes from "../../store/action";
 
 class Counter extends Component {
   render() {
+    console.log(this.props.counter);
     return (
       <div>
         <CounterOutput value={this.props.counter} />
@@ -23,7 +25,13 @@ class Counter extends Component {
           clicked={this.props.onSubtractCounter}
         />
         <hr />
-        <button onClick={this.props.onSaveResult}>Store Result</button>
+        <button
+          onClick={() => {
+            this.props.onSaveResult(this.props.counter);
+          }}
+        >
+          Store Result
+        </button>
         <ul>
           {this.props.result.map((res) => {
             return (
@@ -45,19 +53,21 @@ class Counter extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    counter: state.counter,
-    result: state.results,
+    counter: state.ctr.counter,
+    result: state.res.results,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onIncrementCounter: () => dispatch({ type: "INCREMENT" }),
-    onDecrementCounter: () => dispatch({ type: "DECREMENT" }),
-    onAddCounter: () => dispatch({ type: "ADD", value: 5 }),
-    onSubtractCounter: () => dispatch({ type: "SUBTRACT", value: 5 }),
-    onSaveResult: () => dispatch({ type: "STORE_RESULT" }),
-    onDeleteResult: (id) => dispatch({ type: "DELETE_RESULT", resultElId: id }),
+    onIncrementCounter: () => dispatch({ type: actionTypes.INCREMENT }),
+    onDecrementCounter: () => dispatch({ type: actionTypes.DECREMENT }),
+    onAddCounter: () => dispatch({ type: actionTypes.ADD, value: 5 }),
+    onSubtractCounter: () => dispatch({ type: actionTypes.SUBTRACT, value: 5 }),
+    onSaveResult: (result) =>
+      dispatch({ type: actionTypes.STORE_RESULT, result: result }),
+    onDeleteResult: (id) =>
+      dispatch({ type: actionTypes.DELETE_RESULT, resultElId: id }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Counter);
