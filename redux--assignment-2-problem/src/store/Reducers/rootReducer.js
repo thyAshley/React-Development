@@ -8,8 +8,8 @@ const reducer = (currentState = initial_state, actions) => {
     case "ADD_PERSON":
       const newPerson = {
         id: Math.random(), // not really unique but good enough here!
-        name: "Max",
-        age: Math.floor(Math.random() * 40),
+        name: actions.personDetail.name,
+        age: actions.personDetail.age,
       };
       newPersonArray = currentState.person.concat(newPerson);
       return {
