@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import axios from "../../axios.order";
 import Aux from "../../hoc/Auxiliary";
@@ -8,7 +9,7 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-
+import * as actionTypes from "../../store/actions";
 const INGREDIENT_PRICE = {
   salad: 0.5,
   cheese: 0.4,
@@ -18,7 +19,12 @@ const INGREDIENT_PRICE = {
 
 class BurgerBuilder extends Component {
   state = {
-    ingredient: null,
+    ingredient: {
+      salad: 0,
+      bacon: 0,
+      cheese: 0,
+      meat: 0,
+    },
     totalPrice: 4.0,
     purchaseable: false,
     purchasing: false,
@@ -26,17 +32,17 @@ class BurgerBuilder extends Component {
     error: false,
   };
 
-  componentDidMount() {
-    axios
-      .get("https://burgerapp-b32e1.firebaseio.com/ingredients.json")
-      .then((response) => {
-        this.setState({ ingredient: response.data });
-        this.updatePurchaseState(response.data);
-      })
-      .catch((err) => {
-        this.setState({ error: true });
-      });
-  }
+  // componentDidMount() {
+  //   axios
+  //     .get("https://burgerapp-b32e1.firebaseio.com/ingredients.json")
+  //     .then((response) => {
+  //       this.setState({ ingredient: response.data });
+  //       this.updatePurchaseState(response.data);
+  //     })
+  //     .catch((err) => {
+  //       this.setState({ error: true });
+  //     });
+  // }
 
   updatePurchaseState(ingredients) {
     const sum = Object.keys(ingredients)
@@ -152,4 +158,18 @@ class BurgerBuilder extends Component {
   }
 }
 
-export default withErrorHandler(BurgerBuilder, axios);
+const mapStateToProps = (state) => {
+  return { ingredients: state.ingredients };
+};
+
+const mapDispatchToProps = (store) => {
+  return {
+    onIngredientAdded: () => dispatch({ type: "ADD_INGREDIENT" }),
+    onIngredientRemove: () => dispatch({ type: "REMOVE_INGREDIENT" }),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(BurgerBuilder, axios));
