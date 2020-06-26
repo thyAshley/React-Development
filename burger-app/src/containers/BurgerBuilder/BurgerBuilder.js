@@ -20,12 +20,6 @@ const INGREDIENT_PRICE = {
 
 class BurgerBuilder extends Component {
   state = {
-    ingredient: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0,
-    },
     totalPrice: 4.0,
     purchaseable: false,
     purchasing: false,
@@ -55,29 +49,6 @@ class BurgerBuilder extends Component {
     this.setState({ purchaseable: sum > 0 });
   }
 
-  addIngredientHandler = (type) => {
-    const oldCount = this.state.ingredient[type];
-    const updatedCounted = oldCount + 1;
-    const updatedIngredients = this.state.ingredient;
-    updatedIngredients[type] = updatedCounted;
-    const newPrice = INGREDIENT_PRICE[type] + this.state.totalPrice;
-    this.setState(updatedIngredients);
-    this.setState({ totalPrice: newPrice });
-    this.updatePurchaseState(updatedIngredients);
-  };
-
-  removeIngredientHandler = (type) => {
-    if (this.state.ingredient[type] > 0) {
-      const newCount = this.state.ingredient[type] - 1;
-      const updatedIngredients = this.state.ingredient;
-      updatedIngredients[type] = newCount;
-      const newPrice = this.state.totalPrice - INGREDIENT_PRICE[type];
-      this.setState(updatedIngredients);
-      this.setState({ totalPrice: newPrice });
-      this.updatePurchaseState(updatedIngredients);
-    }
-  };
-
   purchaseHandler = () => {
     this.setState({ purchasing: true });
   };
@@ -88,8 +59,8 @@ class BurgerBuilder extends Component {
 
   purchaseContinueHandler = () => {
     const queryParams = [];
-    for (let i in this.state.ingredient) {
-      queryParams.push(i + "=" + this.state.ingredient[i]);
+    for (let i in this.props.ing) {
+      queryParams.push(i + "=" + this.props.ing[i]);
     }
     queryParams.push("price=" + this.state.totalPrice);
     const queryString = queryParams.join("&");
@@ -102,7 +73,7 @@ class BurgerBuilder extends Component {
 
   render() {
     const disabledInfo = {
-      ...this.state.ingredient,
+      ...this.props.ing,
     };
     for (let key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0 ? true : false;
@@ -115,13 +86,13 @@ class BurgerBuilder extends Component {
       <Spinner />
     );
 
-    if (this.state.ingredient) {
+    if (this.props.ing) {
       burger = (
         <Aux>
-          <Burger ingredients={this.state.ingredient} />
+          <Burger ingredients={this.props.ing} />
           <BuildControls
-            onAdd={this.addIngredientHandler}
-            onDeduct={this.removeIngredientHandler}
+            onAdd={this.props.onIngredientAdded}
+            onDeduct={this.props.onIngredientRemove}
             disabled={disabledInfo}
             price={this.state.totalPrice.toFixed(2)}
             purchasable={this.state.purchaseable}
@@ -135,7 +106,7 @@ class BurgerBuilder extends Component {
         <OrderSummary
           purchaseCancel={this.purchaseCancelHandler}
           purchaseContinue={this.purchaseContinueHandler}
-          ingredients={this.state.ingredient}
+          ingredients={this.props.ing}
           price={this.state.totalPrice.toFixed(2)}
         />
       );
@@ -160,7 +131,7 @@ class BurgerBuilder extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { ingredients: state.ingredients };
+  return { ing: state.ingredients };
 };
 
 const mapDispatchToProps = (dispatch) => {
