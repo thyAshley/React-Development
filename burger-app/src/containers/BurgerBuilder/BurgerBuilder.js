@@ -10,6 +10,7 @@ import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as actionTypes from "../../store/actions";
+
 const INGREDIENT_PRICE = {
   salad: 0.5,
   cheese: 0.4,
@@ -162,10 +163,12 @@ const mapStateToProps = (state) => {
   return { ingredients: state.ingredients };
 };
 
-const mapDispatchToProps = (store) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onIngredientAdded: () => dispatch({ type: "ADD_INGREDIENT" }),
-    onIngredientRemove: () => dispatch({ type: "REMOVE_INGREDIENT" }),
+    onIngredientAdded: (ing) =>
+      dispatch({ type: actionTypes.ADD_INGREDIENT, ingredient: ing }),
+    onIngredientRemove: (ing) =>
+      dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredient: ing }),
   };
 };
 
