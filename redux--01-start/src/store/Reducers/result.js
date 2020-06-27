@@ -1,11 +1,10 @@
-import * as actionTypes from "../actions/action";
+import * as actionTypes from "../actions/actionType";
 
 const initialState = {
   results: [],
 };
 
 const reducer = (state = initialState, action) => {
-  console.log("here", action);
   switch (action.type) {
     case actionTypes.STORE_RESULT:
       return {

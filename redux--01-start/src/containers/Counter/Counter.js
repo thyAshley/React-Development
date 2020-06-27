@@ -3,11 +3,10 @@ import { connect } from "react-redux";
 
 import CounterControl from "../../components/CounterControl/CounterControl";
 import CounterOutput from "../../components/CounterOutput/CounterOutput";
-import * as actionCreators from "../../store/actions/action";
+import * as actionCreators from "../../store/actions/index";
 
 class Counter extends Component {
   render() {
-    console.log(this.props.counter);
     return (
       <div>
         <CounterOutput value={this.props.counter} />
