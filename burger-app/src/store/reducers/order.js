@@ -1,5 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../utility";
+import { fetchOrder } from "../actions";
 
 const initialState = {
   orders: [],
@@ -7,6 +8,25 @@ const initialState = {
   purchased: false,
 };
 
+const purchaseBurgerSucess = (state, action) => {
+  const newOrder = {
+    ...action.orderData,
+    id: action.orderId,
+    ingredients: state.ingredients,
+  };
+  return updateObject(state, {
+    orders: state.orders.concat(newOrder),
+    loading: false,
+    purchased: true,
+  });
+};
+
+const fetchOrderSuccess = (state, action) => {
+  return updateObject(state, {
+    orders: action.orders,
+    loading: false,
+  });
+};
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.PURCHASE_BURGER_FAIL:
@@ -22,22 +42,10 @@ const reducer = (state = initialState, action) => {
       return updateObject(state, { loading: true });
 
     case actionTypes.PURCHASE_BURGER_SUCCESS:
-      const newOrder = {
-        ...action.orderData,
-        id: action.orderId,
-        ingredients: state.ingredients,
-      };
-      return updateObject(state, {
-        orders: state.orders.concat(newOrder),
-        loading: false,
-        purchased: true,
-      });
+      return purchaseBurgerSucess(state, action);
 
     case actionTypes.FETCH_ORDERS_SUCCESS:
-      return updateObject(state, {
-        orders: action.orders,
-        loading: false,
-      });
+      return fetchOrderSuccess(state, action);
 
     default:
       return state;

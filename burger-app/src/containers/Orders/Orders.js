@@ -16,7 +16,6 @@ class Orders extends Component {
     let orders = <Spinner />;
     if (!this.props.loading) {
       orders = this.props.orders.map((order) => {
-        console.log(order);
         return (
           <Order
             key={order.id}
