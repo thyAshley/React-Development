@@ -121,7 +121,7 @@ class ContactData extends Component {
       formData[el] = this.state.orderForm[el].value;
     }
     const order = {
-      ingredients: this.props.ings,
+      ingredients: this.props.ing,
       price: this.props.price,
       orderData: formData,
     };
