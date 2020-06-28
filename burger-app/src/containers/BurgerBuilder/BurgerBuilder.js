@@ -9,7 +9,7 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import * as actionTypes from "../../store/actions/actionTypes";
+import * as burgerBuilderActions from "../../store/actions/index";
 
 class BurgerBuilder extends Component {
   state = {
@@ -118,9 +118,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onIngredientAdded: (ing) =>
-      dispatch({ type: actionTypes.ADD_INGREDIENT, ingredient: ing }),
+      dispatch(burgerBuilderActions.addIngredient(ing)),
     onIngredientRemove: (ing) =>
-      dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredient: ing }),
+      dispatch(burgerBuilderActions.removeIngredient(ing)),
   };
 };
 
