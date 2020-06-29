@@ -78,7 +78,6 @@ class Auth extends Component {
   };
 
   submitHandler = (event) => {
-    console.log("test");
     event.preventDefault();
     this.props.onAuth(
       this.state.controls.email.value,
@@ -88,7 +87,6 @@ class Auth extends Component {
   };
 
   switchAuthModeHandler = () => {
-    console.log(this.state.isSignUp);
     this.setState((prevState) => {
       return {
         isSignUp: !prevState.isSignUp,
