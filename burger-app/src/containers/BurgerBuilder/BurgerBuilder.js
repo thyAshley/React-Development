@@ -48,7 +48,6 @@ class BurgerBuilder extends Component {
   };
 
   render() {
-    console.log(this.props);
     const disabledInfo = {
       ...this.props.ing,
     };
