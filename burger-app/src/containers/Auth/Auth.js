@@ -105,6 +105,11 @@ class Auth extends Component {
       });
     }
 
+    let errorMessage = null;
+    if (this.props.error) {
+      errorMessage = <p>{this.props.error.response.data.error.message}</p>;
+    }
+
     if (this.props.loading) {
       form = <Spinner />;
     } else {
@@ -128,6 +133,7 @@ class Auth extends Component {
 
     return (
       <div className={classes.Auth}>
+        {errorMessage}
         <form onSubmit={this.submitHandler}>
           {form}
           <Button btnType="Success">SUBMIT</Button>
