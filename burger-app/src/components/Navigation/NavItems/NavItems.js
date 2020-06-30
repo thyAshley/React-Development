@@ -6,14 +6,19 @@ import classes from "./NavItems.module.css";
 const NavItems = (props) => {
   let login;
   if (props.isAuth) {
-    login = <NavItem link="/logout">Logout</NavItem>;
+    login = (
+      <React.Fragment>
+        <NavItem link="/orders">Orders</NavItem>
+        <NavItem link="/logout">Logout</NavItem>
+      </React.Fragment>
+    );
   } else {
     login = <NavItem link="/auth">Login</NavItem>;
   }
   return (
     <ul className={classes.NavItems}>
       <NavItem link="/">Burger Builder</NavItem>
-      <NavItem link="/orders">Orders</NavItem>
+
       {login}
     </ul>
   );
