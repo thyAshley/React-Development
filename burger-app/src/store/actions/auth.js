@@ -1,6 +1,7 @@
 import axios from "axios";
-
 import * as actionType from "./actionTypes";
+
+import { apikey } from "../../secret";
 
 export const authStart = () => {
   return {
@@ -33,11 +34,13 @@ export const auth = (email, password, method) => {
     };
 
     let url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBBO7MCQ06VT-stLeTijz9rGXpBeT-j-rY";
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" +
+      apikey;
 
     if (method === true) {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBBO7MCQ06VT-stLeTijz9rGXpBeT-j-rY";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" +
+        apikey;
     }
     axios
       .post(url, authData)

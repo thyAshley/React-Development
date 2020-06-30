@@ -5,6 +5,7 @@ import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
 import classes from "./Auth.module.css";
 import * as actions from "../../store/actions/index";
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 class Auth extends Component {
   state = {
@@ -95,6 +96,8 @@ class Auth extends Component {
   };
   render() {
     const formElement = [];
+    let form;
+
     for (let key in this.state.controls) {
       formElement.push({
         id: key,
@@ -102,22 +105,27 @@ class Auth extends Component {
       });
     }
 
-    const form = formElement.map((el) => {
-      return (
-        <Input
-          key={el.id}
-          elementtype={el.config.elementType}
-          elementconfig={el.config.elementConfig}
-          value={el.config.value}
-          invalid={!el.config.valid}
-          shouldValidate={el.config.validation}
-          touched={el.config.touched}
-          changed={(e) => {
-            this.inputChangedHandler(e, el.id);
-          }}
-        />
-      );
-    });
+    if (this.props.loading) {
+      form = <Spinner />;
+    } else {
+      form = formElement.map((el) => {
+        return (
+          <Input
+            key={el.id}
+            elementtype={el.config.elementType}
+            elementconfig={el.config.elementConfig}
+            value={el.config.value}
+            invalid={!el.config.valid}
+            shouldValidate={el.config.validation}
+            touched={el.config.touched}
+            changed={(e) => {
+              this.inputChangedHandler(e, el.id);
+            }}
+          />
+        );
+      });
+    }
+
     return (
       <div className={classes.Auth}>
         <form onSubmit={this.submitHandler}>
@@ -132,6 +140,13 @@ class Auth extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (email, password, method) =>
@@ -139,4 +154,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
