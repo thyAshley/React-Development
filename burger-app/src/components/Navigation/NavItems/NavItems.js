@@ -18,7 +18,6 @@ const NavItems = (props) => {
   return (
     <ul className={classes.NavItems}>
       <NavItem link="/">Burger Builder</NavItem>
-
       {login}
     </ul>
   );
