@@ -39,7 +39,6 @@ class Checkout extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     ing: state.burgerBuilder.ingredients,
     purchased: state.order.purchased,

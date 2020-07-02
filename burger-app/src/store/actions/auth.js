@@ -34,7 +34,6 @@ export const logout = () => {
 };
 
 export const checkAuthTimeout = (expirationTime) => {
-  console.log(expirationTime);
   return (dispatch) => {
     setTimeout(() => {
       dispatch(logout());
@@ -72,7 +71,6 @@ export const auth = (email, password, method) => {
         dispatch(checkAuthTimeout(response.data.expiresIn));
       })
       .catch((err) => {
-        console.log(err.response.data.error.message);
         dispatch(authFail(err));
       });
   };
@@ -88,7 +86,6 @@ export const setAuthRedirectPath = (path) => {
 export const authCheckState = () => {
   return (dispatch) => {
     const token = localStorage.getItem("token");
-    console.log("auth", token);
     if (!token) {
       dispatch(logout());
     }
