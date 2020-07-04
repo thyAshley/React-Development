@@ -1,12 +1,28 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useReducer, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 import IngredientList from "./IngredientList";
 import IngredientForm from "./IngredientForm";
 import Search from "./Search";
+import ErrorModal from "../UI/ErrorModal";
+
+const ingredientReducer = (currentIngredient, action) => {
+  switch (action.type) {
+    case "SET":
+      return action.ingredients;
+    case "ADD":
+      return [...currentIngredient, action.ingredient];
+    case "DELETE":
+      return currentIngredient.filter((ing) => ing.id !== action.id);
+    default:
+      throw new Error("Should not reached");
+  }
+};
 
 function Ingredients() {
-  const [ings, setIngs] = useState([]);
+  const [ings, dispatchIngs] = useReducer(ingredientReducer, []);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const url =
     "https://reacthooks-practice-21b80.firebaseio.com/ingredients.json";
@@ -16,44 +32,55 @@ function Ingredients() {
   }, [ings]);
 
   const addIngredientHandler = (ingredient) => {
+    setIsLoading(true);
     axios
       .post(url, {
         ...ingredient,
       })
       .then((response) => {
-        console.log(response.data);
-        setIngs((prevIng) => [
-          ...prevIng,
-          { id: response.data.name, ...ingredient },
-        ]);
+        setIsLoading(false);
+        dispatchIngs({
+          type: "ADD",
+          ingredient: {
+            id: response.data.name,
+            ...ingredient,
+          },
+        });
+      })
+      .catch((err) => {
+        setError(err.message);
+        setIsLoading(false);
       });
-
-    console.log(ings);
   };
 
   const removeIngredientHandler = (id) => {
+    setIsLoading(true);
     axios
       .delete(
         `https://reacthooks-practice-21b80.firebaseio.com/ingredients/${id}.json`
       )
       .then((response) => {
-        console.log(response);
+        setIsLoading(false);
+        dispatchIngs({ type: "DELETE", id });
       })
       .catch((err) => {
-        console.log(err);
+        setIsLoading(false);
+        setError(err.message);
       });
-
-    const updatedIng = [...ings].filter((ingredient) => ingredient.id !== id);
-    setIngs(updatedIng);
   };
 
-  const filteredIngredientHandler = useCallback((ingredient) => {
-    setIngs(ingredient);
+  const filteredIngredientHandler = useCallback((ingredients) => {
+    dispatchIngs({ type: "SET", ingredients });
   }, []);
+
+  const clearError = () => {
+    setError(null);
+  };
 
   return (
     <div className="App">
-      <IngredientForm onAdd={addIngredientHandler} />
+      {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
+      <IngredientForm onAdd={addIngredientHandler} loading={isLoading} />
 
       <section>
         <Search onLoadIngredient={filteredIngredientHandler} />
