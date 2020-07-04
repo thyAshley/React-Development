@@ -10,7 +10,7 @@ const Search = React.memo((props) => {
   const inputRef = useRef();
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if (enterFilter === inputRef.current.value) {
         const queryParams =
           enterFilter.length === 0
@@ -28,6 +28,9 @@ const Search = React.memo((props) => {
         });
       }
     }, 500);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [enterFilter, onLoadIngredient]);
 
   const url =
