@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect, useCallback } from "react";
+import React, { useReducer, useState, useCallback } from "react";
 import axios from "axios";
 
 import IngredientList from "./IngredientList";
@@ -19,26 +19,39 @@ const ingredientReducer = (currentIngredient, action) => {
   }
 };
 
+const httpReducer = (currentHttp, action) => {
+  switch (action.type) {
+    case "SEND_REQUEST":
+      return { ...currentHttp, loading: true, error: null };
+    case "RESPONSE":
+      return { ...currentHttp, loading: false };
+    case "ERROR":
+      return { ...currentHttp, loading: false, error: action.error };
+    case "CLEAR":
+      return { ...currentHttp, error: null };
+    default:
+      throw new Error("Should not reached");
+  }
+};
+
 function Ingredients() {
   const [ings, dispatchIngs] = useReducer(ingredientReducer, []);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [httpState, dispatchHttp] = useReducer(httpReducer, {
+    loading: false,
+    error: null,
+  });
 
   const url =
     "https://reacthooks-practice-21b80.firebaseio.com/ingredients.json";
 
-  useEffect(() => {
-    console.log("Rendering Ingredients", ings);
-  }, [ings]);
-
   const addIngredientHandler = (ingredient) => {
-    setIsLoading(true);
+    dispatchHttp({ type: "SEND_REQUEST" });
     axios
       .post(url, {
         ...ingredient,
       })
       .then((response) => {
-        setIsLoading(false);
+        dispatchHttp({ type: "RESPONSE" });
         dispatchIngs({
           type: "ADD",
           ingredient: {
@@ -48,24 +61,22 @@ function Ingredients() {
         });
       })
       .catch((err) => {
-        setError(err.message);
-        setIsLoading(false);
+        dispatchHttp({ type: "ERROR", error: err.message });
       });
   };
 
   const removeIngredientHandler = (id) => {
-    setIsLoading(true);
+    dispatchHttp({ type: "SEND_REQUEST" });
     axios
       .delete(
         `https://reacthooks-practice-21b80.firebaseio.com/ingredients/${id}.json`
       )
       .then((response) => {
-        setIsLoading(false);
+        dispatchHttp({ type: "RESPONSE" });
         dispatchIngs({ type: "DELETE", id });
       })
       .catch((err) => {
-        setIsLoading(false);
-        setError(err.message);
+        dispatchHttp({ type: "ERROR", error: err.message });
       });
   };
 
@@ -74,13 +85,18 @@ function Ingredients() {
   }, []);
 
   const clearError = () => {
-    setError(null);
+    dispatchHttp({ type: "CLEAR" });
   };
 
   return (
     <div className="App">
-      {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
-      <IngredientForm onAdd={addIngredientHandler} loading={isLoading} />
+      {httpState.error && (
+        <ErrorModal onClose={clearError}>{httpState.error}</ErrorModal>
+      )}
+      <IngredientForm
+        onAdd={addIngredientHandler}
+        loading={httpState.loading}
+      />
 
       <section>
         <Search onLoadIngredient={filteredIngredientHandler} />
