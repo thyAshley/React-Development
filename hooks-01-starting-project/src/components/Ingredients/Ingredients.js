@@ -32,6 +32,17 @@ function Ingredients() {
   };
 
   const removeIngredientHandler = (id) => {
+    axios
+      .delete(
+        `https://reacthooks-practice-21b80.firebaseio.com/ingredients/${id}.json`
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     const updatedIng = [...ings].filter((ingredient) => ingredient.id !== id);
     setIngs(updatedIng);
   };
