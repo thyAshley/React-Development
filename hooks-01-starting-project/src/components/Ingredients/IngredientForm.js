@@ -5,6 +5,7 @@ import Card from "../UI/Card";
 import "./IngredientForm.css";
 
 const IngredientForm = React.memo((props) => {
+  console.log("RENDERING INGREDIENT FORM");
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
 

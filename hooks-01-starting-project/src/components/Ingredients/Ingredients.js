@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useCallback } from "react";
+import React, { useReducer, useCallback, useMemo } from "react";
 import axios from "axios";
 
 import IngredientList from "./IngredientList";
@@ -44,7 +44,7 @@ function Ingredients() {
   const url =
     "https://reacthooks-practice-21b80.firebaseio.com/ingredients.json";
 
-  const addIngredientHandler = (ingredient) => {
+  const addIngredientHandler = useCallback((ingredient) => {
     dispatchHttp({ type: "SEND_REQUEST" });
     axios
       .post(url, {
@@ -63,9 +63,9 @@ function Ingredients() {
       .catch((err) => {
         dispatchHttp({ type: "ERROR", error: err.message });
       });
-  };
+  }, []);
 
-  const removeIngredientHandler = (id) => {
+  const removeIngredientHandler = useCallback((id) => {
     dispatchHttp({ type: "SEND_REQUEST" });
     axios
       .delete(
@@ -78,15 +78,24 @@ function Ingredients() {
       .catch((err) => {
         dispatchHttp({ type: "ERROR", error: err.message });
       });
-  };
+  }, []);
 
   const filteredIngredientHandler = useCallback((ingredients) => {
     dispatchIngs({ type: "SET", ingredients });
   }, []);
 
-  const clearError = () => {
+  const clearError = useCallback(() => {
     dispatchHttp({ type: "CLEAR" });
-  };
+  }, []);
+
+  const ingredientList = useMemo(() => {
+    return (
+      <IngredientList
+        ingredients={ings}
+        onRemoveItem={removeIngredientHandler}
+      />
+    );
+  }, [ings, removeIngredientHandler]);
 
   return (
     <div className="App">
@@ -100,10 +109,7 @@ function Ingredients() {
 
       <section>
         <Search onLoadIngredient={filteredIngredientHandler} />
-        <IngredientList
-          ingredients={ings}
-          onRemoveItem={removeIngredientHandler}
-        />
+        {ingredientList}
       </section>
     </div>
   );
